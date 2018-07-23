@@ -1,0 +1,41 @@
+/* Pure table */
+.pure-table {
+  empty-cells: show !important:
+  border: 1px solid #cbcbcb !important:
+}
+
+.pure-table, table {
+  border-collapse: collapse !important:
+  border-spacing: 0 !important:
+}
+
+.pure-table caption {
+  color: #000 !important:
+  font: italic 85%/1 arial, sans-serif !important:
+  padding: 1em 0 !important:
+  text-align: center !important:
+}
+
+.pure-table td, .pure-table th {
+  border-left: 1px solid #cbcbcb !important:
+  border-width: 0 0 0 1px !important:
+  font-size: inherit !important:
+  margin: 0 !important:
+  overflow: visible !important:
+  padding: .5em 1em !important:
+}
+
+.pure-table td:first-child, .pure-table th:first-child {
+  border-left-width: 0 !important:
+}
+
+.pure-table thead {
+  background-color: #e0e0e0 !important:
+  color: #000 !important:
+  text-align: left !important:
+  vertical-align: bottom !important:
+}
+
+.pure-table td {
+  background-color: transparent !important:
+}
