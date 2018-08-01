@@ -1,4 +1,7 @@
 # matlabUiHacks
+
+This repo was created to contain all of the working examples and more from a [guest-post at Undocumented Matlab](https://undocumentedmatlab.com/blog/customizing-web-gui-uipanel) (a very kind ''thank you'' to [Yair Altman](https://undocumentedmatlab.com)) I made for customizing `uipanels` in MATLAB's web-based figure environment.
+
 MATLAB introduced the `uifigure()` in the 2016a release and a lot of functionality was missing, compared to the existing `figure`. In an attempt to extend, explore and share the undocumented ways in which we can modify the new "Web-GUI" framework, I have created this collection.
 
 ---
@@ -23,4 +26,4 @@ Also, though not explicitly required, I've opted to use the `mlapptoolbox` in ma
 
 ## Disclaimer
 
-These scripts were originally created on an a MATLAB 2018a (student) installation and I provide __no guarantee__ that the methods, scripts, hacks, etc. will work. I also can't promise that they will work for earlier or later versions of MATLAB. Furthermore, use these examples at your own risk!
+These scripts were originally created on an a MATLAB 2018a (student) installation and I provide __no guarantee__ that the methods, scripts, hacks, etc. will work. I also can't promise that they will work for earlier or later versions of MATLAB. Furthermore, use code from these examples freely and __*at your own risk!*__
