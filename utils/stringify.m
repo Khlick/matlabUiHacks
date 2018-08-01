@@ -1,4 +1,4 @@
-function varargout = stringify(scriptFiles,prepForSprintf)
+function varargout = stringify(scriptFiles,prepForSprintf,killCntrl)
 %% STRINGIFY  Prepares script files for use in MATLAB uifigure tweaks
 %   Usage:
 %     Strings = stringify('filename.css', true);
@@ -17,6 +17,7 @@ function varargout = stringify(scriptFiles,prepForSprintf)
 % Khris Griffis 2018
 
 %%
+if nargin <3, killCntrl = true; end
 if nargin < 2, prepForSprintf = true; end
 if nargin < 1
   scriptFiles = 'select';
@@ -54,8 +55,15 @@ for fi = 1:nFiles
   end
   stringified{fi} = fread(fid, [1, inf], '*char');
   fclose(fid);
+  % insert \n for newline characters
+  stringified{fi} = regexprep(stringified{fi}, ['[',char(0:20),']'], '9~');
   if prepForSprintf
     stringified{fi} = regexprep(stringified{fi}, '(\\|\%)', '$0$0');
+    stringified{fi} = regexprep(stringified{fi}, '(9~)+', '\\n');
+  elseif killCntrl
+    stringified{fi} = regexprep(stringified{fi}, '(9~)+', '');
+  else
+    stringified{fi} = regexprep(stringified{fi}, '(9~)+', '\n');
   end
 end
 

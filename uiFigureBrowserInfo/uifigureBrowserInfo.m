@@ -97,3 +97,9 @@ webwin.executeJS(['document.head.innerHTML += ',tableCSS]);
 
 % run the JS to inspect navigator and make table
 webwin.executeJS(sprintf(js,nodeID));
+
+%% Check the javascript version
+
+checkJS_wCon = stringify('./checkJS.js',false,false);
+
+
