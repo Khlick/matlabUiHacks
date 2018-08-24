@@ -68,13 +68,9 @@ for fi = 1:nFiles
     stringified{fi} = regexprep(stringified{fi}, '(9~)+', '\\n');
   elseif killCntrl
     % In this case, we do not want any \n or control chars, thus everything
-    % will become a single line char array. I.e. remove all groups of '9~'
+    % will become a single line char array;
     stringified{fi} = regexprep(stringified{fi}, '(9~)+', '');
   else
-    % Use both flags as false if you want to have the string contain
-    % newline characters in place of control but will not be preparing it
-    % for sprintf() use. This use case would be if your script will go in
-    % as-is. This might be best for CSS injection into the DOM <head>
     stringified{fi} = regexprep(stringified{fi}, '(9~)+', '\n');
   end
 end
