@@ -1,25 +1,29 @@
-function varargout = stringify(scriptFiles,prepForSprintf,killCntrl)
-%% STRINGIFY  Prepares script files for use in MATLAB uifigure tweaks
+function varargout = stringify(scriptFiles,prepForSprintf,killCntrl,quotes)
+%% stringify  Prepares script files for use in MATLAB uifigure tweaks
 %   Usage:
-%     Strings = stringify('filename.css', true, true);
+%     Strings = stringify('filename.css', false, false,'"');
 %   Arguments:
 %     scriptFiles: str|cellstr, file names of script files or 'select'
 %     prepForSprintf: bool[true], will replace special characters so that
 %      sprintf can be used aferward. e.g. line ends will be converted to
-%      '\n' in the output text.
-%     killCntrl: bool[true], 
+%      '\\n' in the output text.
+%     killCntrl: bool[true], Replace control chars with empty str
+%     quotes: char[''''|'"'|''], Supply a quote character to standardize
+%     the loaded scripts quoting character.
 %   Output:
 %     1st arg: cell array of stringified scripts
 %     2nd arg: [optional] cell array of error messages
 %
-%   STRINGIFY can be called without inputs and user will be prompted to
-%   select the desired script files.
+%   Note: 
+%     stringify can be called without inputs and user will be prompted to
+%       select the desired script files.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Khris Griffis 2018
 
 %%
-if nargin <3, killCntrl = true; end
+if nargin < 4, quotes = ''; end
+if nargin < 3, killCntrl = true; end
 if nargin < 2, prepForSprintf = true; end
 if nargin < 1
   scriptFiles = 'select';
@@ -41,7 +45,8 @@ if ~iscell(scriptFiles)
     scriptFiles = {scriptFiles}; 
   end
 end
-
+%validate quote character
+quotes = validatestring(quotes, {'''', '"', ''});
 % initialize text holders
 nFiles = length(scriptFiles);
 erMsg = cell(nFiles,1);
@@ -59,7 +64,7 @@ for fi = 1:nFiles
   fclose(fid);
   % insert '9~' for all control characters
   stringified{fi} = regexprep(stringified{fi}, ['[',char(0:20),']'], '9~');
-  if prepForSprintf && ~killCntrl
+  if prepForSprintf
     % Find backslash and percent sign, special characters and prepare them
     % for sprintf() use by doubling them up. i.e. \ -> \\ or % -> %%
     stringified{fi} = regexprep(stringified{fi}, '(\\|\%)', '$0$0');
@@ -75,7 +80,15 @@ for fi = 1:nFiles
     % newline characters in place of control but will not be preparing it
     % for sprintf() use. This use case would be if your script will go in
     % as-is. This might be best for CSS injection into the DOM <head>
-    stringified{fi} = regexprep(stringified{fi}, '(9~)+', '\n');
+    stringified{fi} = regexprep(stringified{fi}, '(9~)+', '\\n');
+  end
+  % modify all the quote symbols to be those specified in quotes arg
+  if strcmp(quotes, '''')
+    %convert to single quote
+    stringified{fi} = regexprep(stringified{fi}, '"', quotes);
+  elseif strcmp(quotes,'"')
+    %convert to double quote
+    stringified{fi} = regexprep(stringified{fi}, '''', quotes);
   end
 end
 
@@ -84,6 +97,4 @@ end
 varargout{1} = stringified(~cellfun(@isempty, stringified, 'unif',1));
 if nargout > 1
   varargout{2} = erMsg;
-end
-
 end
